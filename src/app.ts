@@ -1,5 +1,5 @@
 import Koa from "koa";
-import { consonantRouter } from "./routes/consonants";
+import { consonantRouter } from "./routes/consonant";
 
 export const app = new Koa();
 

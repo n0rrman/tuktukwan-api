@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  server:
+    image: tuktukwan-api
+    build: .
+    networks:
+      - api
+    env_file: ./src/database/.env
+    ports:
+      - "80:2456"
+    depends_on:
+      database:
+        condition: service_started
+
+ 
+  database:
+    image: postgres:14.3
+    networks: 
+      - api
+    ports:
+      - "5432:5432"
+    env_file: ./src/database/.env
+    volumes:
+      - data:/var/lib/postgresql/data
+
+volumes:
+  data:
+
+networks:
+  api:
+    external: false
