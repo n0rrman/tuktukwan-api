@@ -1,0 +1,6 @@
+.github
+.env.local
+.git
+.gitignore
+migrations
+node_modules

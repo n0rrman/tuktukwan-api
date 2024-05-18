@@ -4,10 +4,11 @@
   "main": "index.ts",
   "scripts": {
     "migrate": "node-pg-migrate",
-    "migrate_up": "DATABASE_URL=postgres://$(grep POSTGRES_USER ./src/database/.env | cut -d '=' -f2):$(grep POSTGRES_PASSWORD ./src/database/.env | cut -d '=' -f2)@$(grep POSTGRES_HOST ./src/database/.env | cut -d '=' -f2):$(grep POSTGRES_PORT ./src/database/.env | cut -d '=' -f2)/$(grep POSTGRES_DB ./src/database/.env | cut -d '=' -f2) node-pg-migrate up",
-    "migrate_down": "DATABASE_URL=postgres://$(grep POSTGRES_USER ./src/database/.env | cut -d '=' -f2):$(grep POSTGRES_PASSWORD ./src/database/.env | cut -d '=' -f2)@$(grep POSTGRES_HOST ./src/database/.env | cut -d '=' -f2):$(grep POSTGRES_PORT ./src/database/.env | cut -d '=' -f2)/$(grep POSTGRES_DB ./src/database/.env | cut -d '=' -f2) node-pg-migrate down",
+    "migrate_up": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate up",
+    "migrate_down": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate down",
     "dev": "docker compose up --build",
     "start": "yarn ts-node index.ts",
+    "backup": "pg_dump --dbname=$(grep POSTGRES_DB .env.local | cut -d '=' -f2) --host=localhost --username=$(grep POSTGRES_USER .env.local | cut -d '=' -f2) --password > $(date +%s).sql",
     "test": "jest --no-cache"
   },
   "license": "MIT",

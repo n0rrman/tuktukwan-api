@@ -6,26 +6,26 @@ services:
     build: .
     networks:
       - api
-    env_file: ./src/database/.env
+    env_file: .env.local
     ports:
       - "80:2456"
     depends_on:
       database:
         condition: service_started
 
- 
   database:
     image: postgres:14.3
     networks: 
       - api
     ports:
       - "5432:5432"
-    env_file: ./src/database/.env
+    env_file: .env.local
     volumes:
       - data:/var/lib/postgresql/data
 
 volumes:
   data:
+    driver: local
 
 networks:
   api:
