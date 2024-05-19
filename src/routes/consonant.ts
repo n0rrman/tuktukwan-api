@@ -4,9 +4,17 @@ import ConsonantRepo from "../repos/consonant-repo";
 const router = new Router();
 
 router.get('/api/consonant', async (ctx, next) => { 
-    ctx.status = 200;
-    ctx.body = await ConsonantRepo.find();
+    try {
+        const data = await ConsonantRepo.find();
+        ctx.status = 200;
+        ctx.body = data;
+    } catch (err: unknown) {
+        ctx.status = 500;
+        ctx.body = err;
+    }
+
     return next();
+
 });
 
 router.get('/api', async (ctx, next) => { 

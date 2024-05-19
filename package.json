@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "migrate": "node-pg-migrate",
+    "migrate": "DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB yarn run node-pg-migrate up",
     "migrate_up": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate up",
     "migrate_down": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate down",
     "dev": "docker compose up --build",
@@ -14,18 +14,18 @@
   "license": "MIT",
   "dependencies": {
     "@types/pg": "^8.11.6",
-    "dotenv": "^16.4.5",
+    "@types/koa": "^2.15.0",
+    "@types/koa-router": "^7.4.8",
     "jest": "^29.7.0",
     "koa": "^2.15.3",
     "koa-router": "^12.0.1",
     "node-pg-migrate": "^7.2.2",
-    "@types/koa": "^2.15.0",
-    "@types/koa-router": "^7.4.8",
     "pg": "^8.11.5",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0",
-    "typescript": "^5.4.5"
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0"
   }
 }
