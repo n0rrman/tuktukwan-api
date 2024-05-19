@@ -8,6 +8,6 @@ ENV PORT 80
 EXPOSE 80
 
 COPY . .
-RUN yarn migrate 
+RUN npm run migrate 
 CMD ["yarn", "start"]
 
