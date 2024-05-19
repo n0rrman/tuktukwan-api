@@ -11,10 +11,9 @@ router.get('/api/consonant', async (ctx, next) => {
     } catch (err: unknown) {
         ctx.status = 500;
         ctx.body = err;
-    }
+    } 
 
     await next();
-
 });
 
 router.get('/api', async (ctx, next) => { 
@@ -29,8 +28,7 @@ router.get('/', async (ctx, next) => {
     console.log("/")
     ctx.status = 200;
     ctx.body = "It works!"
-    
-    
+        
     await next();
 });
 
