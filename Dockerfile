@@ -4,8 +4,8 @@ WORKDIR /app
 COPY package.json .
 RUN npm install --prod
 
-ENV PORT 2567
-EXPOSE 2567
+ENV PORT 80
+EXPOSE 80
 
 COPY . .
 CMD ["yarn", "start"]

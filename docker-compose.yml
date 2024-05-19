@@ -8,7 +8,7 @@ services:
       - api
     env_file: .env.local
     ports:
-      - "80:2567"
+      - "80:80"
     depends_on:
       database:
         condition: service_started
