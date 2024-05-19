@@ -13,21 +13,27 @@ router.get('/api/consonant', async (ctx, next) => {
         ctx.body = err;
     }
 
-    return next();
+    await next();
 
 });
 
 router.get('/api', async (ctx, next) => { 
+    console.log("/api")
     ctx.status = 200;
     ctx.body = "/api"
-    return next();
+    
+    await next();
 });
 
 router.get('/', async (ctx, next) => { 
+    console.log("/")
     ctx.status = 200;
     ctx.body = "It works!"
-    return next();
+    
+    
+    await next();
 });
+
 
 export { router as consonantRouter };
 
