@@ -2,11 +2,12 @@
   "name": "tuktukwan-api",
   "version": "1.0.0",
   "scripts": {
-    "migrate": "DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB ./node_modules/node-pg-migrate/bin/node-pg-migrate.js up",
+    "server:migrate-up": "DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB ./node_modules/node-pg-migrate/bin/node-pg-migrate.js up",
+    "server:migrate-down": "DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB ./node_modules/node-pg-migrate/bin/node-pg-migrate.js down",
     "migrate_up": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate up",
     "migrate_down": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate down",
     "dev": "docker compose up --build",
-    "start": "yarn migrate && node index.js",
+    "start": "yarn server:migrate-up && node index.js",
     "backup": "pg_dump --dbname=$(grep POSTGRES_DB .env.local | cut -d '=' -f2) --host=localhost --username=$(grep POSTGRES_USER .env.local | cut -d '=' -f2) --password > $(date +%s).sql",
     "test": "jest --no-cache",
     "build": "tsc"
