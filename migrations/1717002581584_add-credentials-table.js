@@ -20,7 +20,7 @@ exports.up = (pgm) => {
 
       CREATE TABLE credential(
           id SERIAL PRIMARY KEY,
-          username VARCHAR(64) REFERENCE "user"(username)
+          username VARCHAR(64) REFERENCES "user"(username),
           password_hash VARCHAR(255),
           login_strategy strategy,
           login_id VARCHAR(128),
