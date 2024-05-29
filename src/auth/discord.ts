@@ -4,10 +4,12 @@ const strategy = new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID!,
     clientSecret: process.env.DISCORD_CLIENT_SECRET!,
     callbackURL: `${process.env.HOST_URL}/api/auth/discord/callback`,
-    scope: ["identify"],
+    passReqToCallback: true,
+    scope: ['identify']
   },
-  (accessToken, refreshToken, profile, done) => {
+  (req, accessToken, refreshToken, profile, done) => {
     // console.log("accessToken", accessToken, "refreshToken:", refreshToken, "profile:",profile,)
+    console.log("req:", req)
     console.log("accessToken:", accessToken)
     console.log("profile:", profile)
     console.log("refreshToken:", refreshToken)

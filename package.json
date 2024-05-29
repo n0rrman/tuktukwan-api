@@ -6,6 +6,7 @@
     "server:migrate-down": "DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB ./node_modules/node-pg-migrate/bin/node-pg-migrate.js down",
     "migrate_up": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate up",
     "migrate_down": "DATABASE_URL=postgres://$(grep POSTGRES_USER .env.local | cut -d '=' -f2):$(grep POSTGRES_PASSWORD .env.local | cut -d '=' -f2)@localhost:$(grep POSTGRES_PORT .env.local | cut -d '=' -f2)/$(grep POSTGRES_DB .env.local | cut -d '=' -f2) node-pg-migrate down",
+    "migrate": "./node_modules/node-pg-migrate/bin/node-pg-migrate.js",
     "dev": "docker compose up --build",
     "start": "yarn server:migrate-up && node index.js",
     "backup": "pg_dump --dbname=$(grep POSTGRES_DB .env.local | cut -d '=' -f2) --host=localhost --username=$(grep POSTGRES_USER .env.local | cut -d '=' -f2) --password > $(date +%s).sql",
