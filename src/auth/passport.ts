@@ -42,7 +42,7 @@ export const passportMiddleware = async (ctx: any, next: Next) => {
 
 passport.use("github", githubStrategy)
 passport.use("google", googleStrategy)
-passport.use("discrd", discordStrategy)
+passport.use("discord", discordStrategy)
 passport.use("local", localStrategy)
 passport.use("microsoft", microsoftStrategy)
 

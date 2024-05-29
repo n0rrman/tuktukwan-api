@@ -3,7 +3,7 @@ import { Strategy as DiscordStrategy } from "passport-discord";
 const strategy = new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID!,
     clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-    callbackURL: `${process.env.HOST}/api/auth/discord/callback`,
+    callbackURL: `${process.env.HOST_URL}/api/auth/discord/callback`,
     scope: ["identify"],
   },
   (accessToken, refreshToken, profile, done) => {

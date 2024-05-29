@@ -72,7 +72,7 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
         ctx.redirect("/api/auth/status")
         console.log("logged in:",ctx.isAuthenticated())
     } else {
-        console.log("authenticated with discord FAILED")        
+        console.log("authenticated with google FAILED")        
         ctx.redirect("/api/auth/failed")
     }
 })(ctx, next)

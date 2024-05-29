@@ -4,7 +4,7 @@ import { Strategy as MicrosoftStrategy } from "passport-microsoft";
 const strategy = new MicrosoftStrategy({
     clientID: process.env.MICROSOFT_CLIENT_ID!,
     clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
-    callbackURL: `${process.env.HOST}/api/auth/microsoft/callback`,
+    callbackURL: `${process.env.HOST_URL}/api/auth/microsoft/callback`,
     scope: ['user.read'],
   },
   (accessToken: string, refreshToken: string, profile: any, done: CallableFunction) => {
