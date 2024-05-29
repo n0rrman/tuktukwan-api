@@ -6,6 +6,30 @@ const router = new Router();
 
 
 
+
+// Google
+router.get('/api/auth/discord', async (ctx, next) => {
+    await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
+});
+router.get('/api/auth/discord/callback', async (ctx, next) => {
+   await passport.authenticate('discord', {
+    successReturnToOrRedirect: '/api/auth/status',
+    failureRedirect: '/api'       
+}, async (err, user) => {
+    // console.log(ctx)
+    if (user) {
+        console.log("authenticated with discord")
+        console.log(user)
+        await ctx.login(user)
+        ctx.redirect("/api/auth/status")
+        console.log("logged in:",ctx.isAuthenticated())
+    } else {
+        console.log("authenticated with discord FAILED")        
+        ctx.redirect("/api/auth/failed")
+    }
+})(ctx, next)
+});
+
 // githuv
     router.get('/api/auth/github', async (ctx, next) => {
         await passport.authenticate('github')(ctx, next)

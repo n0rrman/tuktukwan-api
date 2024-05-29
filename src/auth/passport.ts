@@ -1,10 +1,11 @@
 import passport from 'koa-passport';
-import { Next } from 'koa';
+import { Context, Next } from 'koa';
 
 import { githubStrategy } from './github';
 import { googleStrategy } from './google';
 import { microsoftStrategy } from './microsoft';
 import { localStrategy } from './local';
+import { discordStrategy } from './discord';
 
 
 export const passportMiddleware = async (ctx: any, next: Next) => {
@@ -37,11 +38,11 @@ export const passportMiddleware = async (ctx: any, next: Next) => {
         return done(null, null)
     }
   });
-
-
+  
 
 passport.use("github", githubStrategy)
 passport.use("google", googleStrategy)
+passport.use("discrd", discordStrategy)
 passport.use("local", localStrategy)
 passport.use("microsoft", microsoftStrategy)
 
