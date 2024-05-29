@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build --build-arg POSTGRES_USER=${{ secrets.POSTGRES_USER }} --build-arg POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }}--build-arg DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} --build-arg DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }} --build-arg MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }} --build-arg MICROSOFT_CLIENT_SECRET=${{ secrets.MICROSOFT_CLIENT_SECRET }} --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} --build-arg SERVER_KEY=${{ secrets.SERVER_KEY }} --build-arg HOST_URL=${{ secrets.HOST_URL }} -t $DOCKER_IMAGE .
+        run: docker build --build-arg POSTGRES_USER=${{ secrets.POSTGRES_USER }} --build-arg POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }} --build-arg DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} --build-arg DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }} --build-arg MICROSOFT_CLIENT_ID=${{ secrets.MICROSOFT_CLIENT_ID }} --build-arg MICROSOFT_CLIENT_SECRET=${{ secrets.MICROSOFT_CLIENT_SECRET }} --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} --build-arg SERVER_KEY=${{ secrets.SERVER_KEY }} --build-arg HOST_URL=${{ secrets.HOST_URL }} -t $DOCKER_IMAGE .
         env:
           DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
 
