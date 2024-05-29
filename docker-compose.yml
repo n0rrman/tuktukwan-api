@@ -4,6 +4,7 @@ services:
   server:
     image: tuktukwan-api
     build: .
+    restart: always
     networks:
       - api
     env_file: .env.local
@@ -12,13 +13,22 @@ services:
     depends_on:
       database:
         condition: service_started
+      session_storage:
+        condition: service_started
+
+  session_storage:
+    image: redis:7.2.4
+    networks:
+      - api
+    ports:
+      - "6379:6379"
 
   database:
     image: postgres:14.3
     networks: 
       - api
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     env_file: .env.local
     volumes:
       - data:/var/lib/postgresql/data
