@@ -9,8 +9,8 @@ const strategy = new MicrosoftStrategy({
   },
   (accessToken: string, refreshToken: string, profile: any, done: CallableFunction) => {
     // console.log("accessToken", accessToken, "refreshToken:", refreshToken, "profile:",profile,)
-    console.log("profile:", profile)
     console.log("id:", profile.id)
+    console.log("profile:", profile)
     // User.findOrCreate({ githubId: profile.id }, function (err, user) {
     //   return done(err, user);
     // request.session.regenerate(() => {

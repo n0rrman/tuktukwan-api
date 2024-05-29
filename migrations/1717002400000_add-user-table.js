@@ -15,7 +15,7 @@ exports.up = (pgm) => {
             username VARCHAR(64) UNIQUE,
             display_name VARCHAR(255),
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `);
 };

@@ -15,8 +15,8 @@ const strategy = new GoogleStrategy({
   },
   (accessToken: any, refreshToken: any, profile: any, done: any) => {
     // console.log("accessToken", accessToken, "refreshToken:", refreshToken, "profile:",profile,)
-    console.log("profile:", profile)
     console.log("id:", profile.id)
+    console.log("profile:", profile)
     // User.findOrCreate({ githubId: profile.id }, function (err, user) {
     //   return done(err, user);
     // request.session.regenerate(() => {
