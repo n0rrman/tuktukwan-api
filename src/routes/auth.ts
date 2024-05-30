@@ -132,32 +132,10 @@ router.post('/login', async (ctx, next) => {
 
 router.get('/api/auth/status', async (ctx, next) => {
     ctx.status = 200; 
-
-    console.log("ctx:",ctx.session)
-
-    var session = ctx.session!
-    session.testing = parseInt(session.testing) || 0
-    session.testing++
-
-    // console.log(session.testing)
-
-    // ctx.body = session
-
-
-
-    // ctx.logout()
-    console.log("logged in:",ctx.isAuthenticated())
-    // const test = yield this.session;
-
+    ctx.body = ctx.session?.user;
 
     await next();
 
-});
-
-router.get('/api/redirect', async (ctx, next) => {
-    ctx.status = 200; 
-    ctx.redirect("/api/consonant")
-    await next();
 });
 
 
