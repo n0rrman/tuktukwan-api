@@ -12,8 +12,8 @@ exports.up = (pgm) => {
     pgm.sql(`
       CREATE TABLE "user"(
             id SERIAL PRIMARY KEY,
-            username VARCHAR(64) UNIQUE NOT NULL,
-            display_name VARCHAR(255),
+            username VARCHAR(32) UNIQUE NOT NULL,
+            display_name VARCHAR(64),
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );

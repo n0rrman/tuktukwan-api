@@ -7,7 +7,9 @@ services:
     restart: always
     networks:
       - api
-    env_file: .env.local
+    env_file: 
+      - .env.local
+      - .env
     ports:
       - "80:80"
     depends_on:
@@ -27,9 +29,11 @@ services:
     image: postgres:14.3
     networks: 
       - api
-    # ports:
-    #   - "5432:5432"
-    env_file: .env.local
+    ports:
+      - "5432:5432"
+    env_file: 
+      - .env.local
+      - .env
     volumes:
       - data:/var/lib/postgresql/data
 

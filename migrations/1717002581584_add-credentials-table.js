@@ -20,11 +20,13 @@ exports.up = (pgm) => {
 
       CREATE TABLE credential(
           id SERIAL PRIMARY KEY,
-          username VARCHAR(64) REFERENCES "user"(username),
-          password_hash VARCHAR(255),
-          login_strategy strategy,
-          login_id VARCHAR(128),
-          login_username VARCHAR(128)
+          user_id INT REFERENCES "user"(id),
+          auth_id VARCHAR(64) NOT NULL,
+          auth_username VARCHAR(64),
+          auth_provider strategy NOT NULL,
+          hash_password VARCHAR(64),
+          UNIQUE (auth_id, auth_provider),
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `);
 };
@@ -36,7 +38,7 @@ exports.up = (pgm) => {
  */
 exports.down = (pgm) => {
     pgm.sql(`
-        DROP TABLE credentials;
+        DROP TABLE credential;
         DROP TYPE strategy;
     `);
 };

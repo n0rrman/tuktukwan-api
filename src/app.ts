@@ -6,6 +6,7 @@ import session from 'koa-generic-session';
 import { passportMiddleware } from "./auth/passport";
 import { consonantRouter } from "./routes/consonant";
 import { authRouter } from "./routes/auth";
+import { redirectRouter } from "./routes/redirect";
 
 
 // Server
@@ -28,6 +29,8 @@ app.use(passportMiddleware);
 
 // Routes
 app.use(authRouter.routes());
-app.use(authRouter.allowedMethods());
 app.use(consonantRouter.routes());
+app.use(redirectRouter.routes());
+app.use(authRouter.allowedMethods());
 app.use(consonantRouter.allowedMethods());
+app.use(redirectRouter.allowedMethods());
