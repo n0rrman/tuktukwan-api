@@ -19,9 +19,8 @@ const emptyUser: User = {
 
 // Discord
 router.get('/api/auth/discord', async (ctx, next) => {
-    ctx.redirect("https://discord.com/oauth2/authorize?client_id=1245246391329226765&response_type=code&redirect_uri=https%3A%2F%2Ftuktukwan.henriknorrman.com%2Fapi%2Fauth%2Fdiscord%2Fcallback&scope=identify")
+    await passport.authenticate('discord', { scope: ['identify'] })(ctx, next)
     await next()
-    // await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
 });
 router.get('/api/auth/discord/callback', async (ctx, next) => {
     await passport.authenticate('discord', {
