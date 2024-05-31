@@ -2,6 +2,7 @@ import Koa from "koa";
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import session from 'koa-generic-session';
+import cors from '@koa/cors';
 
 import { passportMiddleware } from "./auth/passport";
 import { consonantRouter } from "./routes/consonant";
@@ -13,6 +14,7 @@ import { redirectRouter } from "./routes/redirect";
 export const app = new Koa();
 app.keys = [process.env.SERVER_KEY!];
 app.use(bodyParser());
+app.use(cors());
 
 
 // Redis store

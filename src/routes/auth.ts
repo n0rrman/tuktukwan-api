@@ -132,7 +132,7 @@ router.post('/login', async (ctx, next) => {
 
 router.get('/api/auth/status', async (ctx, next) => {
     ctx.status = 200; 
-    ctx.body = ctx.session?.user;
+    ctx.body = { user: ctx.session?.user || 'offline' };
 
     await next();
 
