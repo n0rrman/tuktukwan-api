@@ -28,8 +28,9 @@ const strategy = new GoogleStrategy({
         })
       }
     })
+  } else {
+    return done(null, false)
   } 
-  return done(null, false)
 });
 
 
