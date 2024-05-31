@@ -7,6 +7,7 @@ const strategy = new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
   callbackURL: `${process.env.HOST_URL}/api/auth/google/callback`,
 }, (accessToken, refreshToken, profile, done) => {
+  console.log("google profile:", profile)
   if (profile) {
     const {id, displayName, provider} = profile;
     CredentialRepo.find(id, displayName, provider).then((auth_user) => {

@@ -8,6 +8,7 @@ const strategy = new MicrosoftStrategy({
   callbackURL: `${process.env.HOST_URL}/api/auth/microsoft/callback`,
   scope: ['user.read'],
 }, (accessToken: string, refreshToken: string, profile: any, done: any) => {
+  console.log("microsoft profile:", profile)
   if (profile) {
     const {id, userPrincipalName, provider} = profile;
     CredentialRepo.find(id, userPrincipalName, provider).then((auth_user) => {
