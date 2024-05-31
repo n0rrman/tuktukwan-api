@@ -5,13 +5,30 @@ import { ParameterizedContext } from "koa";
 
 const router = new Router();
 
+interface User {
+    user_id: string;
+    token: string;
+    credential_id: string;
+}
 
-const successfulLogin = (ctx: ParameterizedContext) => {
+const emptyUser: User = {
+    user_id: "",
+    token: "",
+    credential_id: "",
+}
+
+
+const successfulLogin = async (ctx: ParameterizedContext, user: User) => {
+    console.log("logged in:",ctx.isAuthenticated())
+    ctx.status=200;
+    await ctx.login(user);
+    ctx.redirect("/")
+    
 } 
 
-const createAccount = (ctx: ParameterizedContext) => {}
 
 const failedLogin = (ctx: ParameterizedContext) => {
+    console.log("logged in:",ctx.isAuthenticated())
     ctx.status=400;
     ctx.redirect("/")
 }
@@ -23,15 +40,9 @@ router.get('/api/auth/discord', async (ctx, next) => {
 });
 router.get('/api/auth/discord/callback', async (ctx, next) => {
     await passport.authenticate('discord', async (err, user) => {
-        console.log("init callback",user)
         if (user) {
-        console.log("authenticated with discord")
-            console.log(user)
-            await ctx.login(user)
-            ctx.redirect("/api/auth/status")
-            console.log("logged in:",ctx.isAuthenticated())
+            successfulLogin(ctx, user);
         } else {
-            console.log("failed callback",user)
             failedLogin(ctx)
         }
         await next()
@@ -44,24 +55,14 @@ router.get('/api/auth/github', async (ctx, next) => {
     await passport.authenticate('github')(ctx, next)
 });
 router.get('/api/auth/github/callback', async (ctx, next) => {
-    await passport.authenticate('github', {
-    successReturnToOrRedirect: '/api/auth/status',
-    failureRedirect: '/api'       
-}, async (err, user) => {
-    // console.log(ctx)
-    if (user) {
-
-        console.log("authenticated with github")
-        console.log(user)
-        await ctx.login(user)
-        ctx.redirect("/api/auth/status")
-        console.log("logged in:",ctx.isAuthenticated())
-    } else {
-        console.log("authenticated with github FAILED")        
-        failedLogin(ctx)
-    }
-    await next()
-})(ctx, next)
+    await passport.authenticate('github', async (err, user) => {
+        if (user) {
+            successfulLogin(ctx, user);
+        } else {
+            failedLogin(ctx)
+        }
+        await next()
+    })(ctx, next)
 });
 
 
@@ -70,25 +71,30 @@ router.get('/api/auth/google', async (ctx, next) => {
     await passport.authenticate('google', { scope: ['profile', 'email'] })(ctx, next)
 });
 router.get('/api/auth/google/callback', async (ctx, next) => {
-   await passport.authenticate('google', {
-    successReturnToOrRedirect: '/api/auth/status',
-    failureRedirect: '/api'       
-}, async (err, user) => {
-    console.log("init callback",user)
-    // console.log(ctx)
-    if (user) {
-        console.log("authenticated with google")
-        console.log(user)
-        await ctx.login(user)
-        ctx.redirect("/api/auth/status")
-        console.log("logged in:",ctx.isAuthenticated())
-    } else {
-        console.log("authenticated with google FAILED")        
-        console.log("failed callback",user)
-        failedLogin(ctx)
-    }
-    await next()
-})(ctx, next)
+    await passport.authenticate('google', async (err, user) => {
+        if (user) {
+            successfulLogin(ctx, user);
+        } else {
+            failedLogin(ctx)
+        }
+        await next()
+    })(ctx, next)
+});
+
+
+// Microsoft
+router.get('/api/auth/microsoft', async (ctx, next) => {
+    await passport.authenticate('microsoft', {prompt: 'select_account'})(ctx, next)
+});
+router.get('/api/auth/microsoft/callback', async (ctx, next) => {
+    await passport.authenticate('microsoft', async (err, user) => {
+        if (user) {
+            successfulLogin(ctx, user);
+        } else {
+            failedLogin(ctx)
+        }
+        await next()
+    })(ctx, next)
 });
 
 
@@ -109,36 +115,10 @@ router.post('/login', async (ctx, next) => {
 });
 
 
-// Microsoft
-router.get('/api/auth/microsoft', async (ctx, next) => {
-    await passport.authenticate('microsoft', {prompt: 'select_account'})(ctx, next)
-});
-router.get('/api/auth/microsoft/callback', async (ctx, next) => {
-    await passport.authenticate('microsoft', {
-        successReturnToOrRedirect: '/api/auth/status',
-        failureRedirect: '/api'       
-    }, async (err, user) => {
-        // console.log(ctx)
-        if (user) {
-            
-            console.log("authenticated with microsoft")
-            console.log(user)
-            await ctx.login(user)
-            ctx.redirect("/api/auth/status")
-            console.log("logged in:",ctx.isAuthenticated())
-        } else {
-            console.log("authenticated with discord FAILED")        
-            failedLogin(ctx)
-        }
-        await next()
-    })(ctx, next)
-});
-
-
 // Login status
 router.get('/api/auth/status', async (ctx, next) => {
     ctx.status = 200; 
-    ctx.body = ctx.state.user;
+    ctx.body = ctx.state.user || emptyUser;
     
     console.log("logged in:",ctx.isAuthenticated())
     await next();
