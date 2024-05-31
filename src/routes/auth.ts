@@ -94,8 +94,8 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
     await passport.authenticate('local', { failureRedirect: '/login' },   
     async (err, user) => {
-       console.log("req:",ctx.req)
-       console.log("res:",ctx.res)
+        console.log("req:",ctx.req)
+        console.log("res:",ctx.res)
         if (user) {
             ctx.login(user)
             console.log("authenticated with github")
@@ -103,23 +103,23 @@ router.post('/login', async (ctx, next) => {
             console.log("FAILED authenticated with github")
         }
     }
-    )(ctx, next)
-  });
+)(ctx, next)
+});
 
 
 
-    // Microsoft
-    router.get('/api/auth/microsoft', async (ctx, next) => {
-        await passport.authenticate('microsoft', {prompt: 'select_account'})(ctx, next)
-    });
-    router.get('/api/auth/microsoft/callback', async (ctx, next) => {
-       await passport.authenticate('microsoft', {
+// Microsoft
+router.get('/api/auth/microsoft', async (ctx, next) => {
+    await passport.authenticate('microsoft', {prompt: 'select_account'})(ctx, next)
+});
+router.get('/api/auth/microsoft/callback', async (ctx, next) => {
+    await passport.authenticate('microsoft', {
         successReturnToOrRedirect: '/api/auth/status',
         failureRedirect: '/api'       
     }, async (err, user) => {
         // console.log(ctx)
         if (user) {
-
+            
             console.log("authenticated with microsoft")
             console.log(user)
             await ctx.login(user)
@@ -130,15 +130,16 @@ router.post('/login', async (ctx, next) => {
             failedLogin(ctx)
         }
     })(ctx, next)
-    });
+});
 
 
 router.get('/api/auth/status', async (ctx, next) => {
     ctx.status = 200; 
-    ctx.body = { user: ctx.session?.user || 'offline' };
-
+    console.log("logged in:",ctx.isAuthenticated())
+    ctx.body = { user: ctx.state.user || 'offline' };
+    
     await next();
-
+    
 });
 
 

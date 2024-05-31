@@ -26,8 +26,9 @@ const strategy = new GitHubStrategy({
         })
       }
     })
-  } 
-  return done(null, false)
+  } else {
+    return done(null, false)
+  }
 });
 
 
