@@ -11,7 +11,7 @@ const strategy = new MicrosoftStrategy({
   console.log("microsoft profile:", profile)
   if (profile) {
     const {id, userPrincipalName, provider} = profile;
-    CredentialRepo.find(id, userPrincipalName, provider).then((auth_user) => {
+    CredentialRepo.authenticate(id, userPrincipalName, "", provider).then((auth_user) => {
       if (auth_user) {
         const { id, user_id } = auth_user;
         return done(null, {
@@ -20,7 +20,7 @@ const strategy = new MicrosoftStrategy({
           user_id: user_id 
         });
       } else {
-        CredentialRepo.insert(id, userPrincipalName, provider);
+        CredentialRepo.add(id, userPrincipalName, "", provider);
         return done(null, {
           token: accessToken, 
           credential_id: id, 

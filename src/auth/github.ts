@@ -10,7 +10,8 @@ const strategy = new GithubStrategy({
   console.log("github profile:", profile)
   if (profile) {
     const {id, username, provider} = profile;
-    CredentialRepo.find(id, username, provider).then((auth_user) => {
+    const pictureURL = profile._json.avatar_url || ""
+    CredentialRepo.authenticate(id, username, pictureURL, provider).then((auth_user) => {
       if (auth_user) {
         const { id, user_id } = auth_user;
         return done(null, {
@@ -19,7 +20,7 @@ const strategy = new GithubStrategy({
           user_id: user_id 
         });
       } else {
-        CredentialRepo.insert(id, username, provider);
+        CredentialRepo.add(id, username, pictureURL, provider);
         return done(null, {
           token: accessToken, 
           credential_id: id, 

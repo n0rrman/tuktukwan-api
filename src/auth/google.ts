@@ -10,7 +10,8 @@ const strategy = new GoogleStrategy({
   console.log("google profile:", profile)
   if (profile) {
     const {id, displayName, provider} = profile;
-    CredentialRepo.find(id, displayName, provider).then((auth_user) => {
+    const pictureURL = profile._json.picture || ""
+    CredentialRepo.authenticate(id, displayName, pictureURL, provider).then((auth_user) => {
       if (auth_user) {
         const { id, user_id } = auth_user;
         return done(null, {
@@ -19,7 +20,7 @@ const strategy = new GoogleStrategy({
           user_id: user_id 
         });
       } else {
-        CredentialRepo.insert(id, displayName, provider);
+        CredentialRepo.add(id, displayName, pictureURL, provider);
         return done(null, {
           token: accessToken, 
           credential_id: id, 
