@@ -6,7 +6,8 @@ import { ParameterizedContext } from "koa";
 const router = new Router();
 
 
-const successfulLogin = (ctx: ParameterizedContext) => {} 
+const successfulLogin = (ctx: ParameterizedContext) => {
+} 
 
 const createAccount = (ctx: ParameterizedContext) => {}
 
@@ -16,11 +17,10 @@ const failedLogin = (ctx: ParameterizedContext) => {
 }
 
 
-// discord
+// Discord
 router.get('/api/auth/discord', async (ctx, next) => {
     await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
 });
-
 router.get('/api/auth/discord/callback', async (ctx, next) => {
     await passport.authenticate('discord', async (err, user) => {
         console.log("init callback",user)
@@ -34,32 +34,35 @@ router.get('/api/auth/discord/callback', async (ctx, next) => {
             console.log("failed callback",user)
             failedLogin(ctx)
         }
+        await next()
     })(ctx, next)
 });
 
-// githuv
-    router.get('/api/auth/github', async (ctx, next) => {
-        await passport.authenticate('github')(ctx, next)
-    });
-    router.get('/api/auth/github/callback', async (ctx, next) => {
-       await passport.authenticate('github', {
-        successReturnToOrRedirect: '/api/auth/status',
-        failureRedirect: '/api'       
-    }, async (err, user) => {
-        // console.log(ctx)
-        if (user) {
 
-            console.log("authenticated with github")
-            console.log(user)
-            await ctx.login(user)
-            ctx.redirect("/api/auth/status")
-            console.log("logged in:",ctx.isAuthenticated())
-        } else {
-            console.log("authenticated with github FAILED")        
-            failedLogin(ctx)
-        }
-    })(ctx, next)
-    });
+// GitHub
+router.get('/api/auth/github', async (ctx, next) => {
+    await passport.authenticate('github')(ctx, next)
+});
+router.get('/api/auth/github/callback', async (ctx, next) => {
+    await passport.authenticate('github', {
+    successReturnToOrRedirect: '/api/auth/status',
+    failureRedirect: '/api'       
+}, async (err, user) => {
+    // console.log(ctx)
+    if (user) {
+
+        console.log("authenticated with github")
+        console.log(user)
+        await ctx.login(user)
+        ctx.redirect("/api/auth/status")
+        console.log("logged in:",ctx.isAuthenticated())
+    } else {
+        console.log("authenticated with github FAILED")        
+        failedLogin(ctx)
+    }
+    await next()
+})(ctx, next)
+});
 
 
 // Google
@@ -84,10 +87,9 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
         console.log("failed callback",user)
         failedLogin(ctx)
     }
+    await next()
 })(ctx, next)
 });
-
-
 
 
 // Local
@@ -105,7 +107,6 @@ router.post('/login', async (ctx, next) => {
     }
 )(ctx, next)
 });
-
 
 
 // Microsoft
@@ -129,33 +130,27 @@ router.get('/api/auth/microsoft/callback', async (ctx, next) => {
             console.log("authenticated with discord FAILED")        
             failedLogin(ctx)
         }
+        await next()
     })(ctx, next)
 });
 
 
+// Login status
 router.get('/api/auth/status', async (ctx, next) => {
     ctx.status = 200; 
+    ctx.body = ctx.state.user;
+    
     console.log("logged in:",ctx.isAuthenticated())
-    ctx.body = { user: ctx.state.user || 'offline' };
-    
-    await next();
-    
-});
-
-
-router.get('/api/auth/failed', async (ctx, next) => {
-    ctx.status = 400; 
-    ctx.body = "login failed..."
     await next();
 });
 
 
+// Logout
 router.get('/api/auth/logout', async (ctx, next) => {
     ctx.status = 200; 
-
     ctx.logout() 
+    
     console.log("logged in:", ctx.isAuthenticated())
-
     await next();
 });
 
