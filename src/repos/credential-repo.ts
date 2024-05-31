@@ -6,11 +6,7 @@ export default class CredentialRepo {
   static async authenticate(auth_id: string, username: string, pictureURL: string, provider: string) {
     const row = await CredentialRepo.find(auth_id, provider)
 
-    if (!row) {
-      return row
-    }
-
-    if ((row.auth_username != username) || (row.auth_pictureURL != pictureURL)) {
+    if ((row?.auth_username != username) || (row?.auth_pictureURL != pictureURL)) {
       console.log("credential updated")
       db.query(`
         UPDATE credential
@@ -28,7 +24,7 @@ export default class CredentialRepo {
     SELECT id, user_id, auth_username, auth_pictureURL
     FROM credential
     WHERE auth_id = $1
-      AND auth_provider = $2;
+      AND auth_provider = $2
     `, [ auth_id, provider ]);
 
     return rows[0];
@@ -37,9 +33,9 @@ export default class CredentialRepo {
   static async add(auth_id: string, username: string, pictureURL: string, provider: string){
     db.query(`
       INSERT INTO credential
-        (auth_id, auth_username, auth_pictureURL auth_provider)
+        (auth_id, auth_username, auth_pictureURL, auth_provider)
       VALUES
-        ($1, $2, $3, $4);
+        ($1, $2, $3, $4)
     `, [ auth_id, username, pictureURL, provider ])
   };
   
