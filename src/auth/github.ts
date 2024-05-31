@@ -7,9 +7,11 @@ const strategy = new GitHubStrategy({
   clientSecret: process.env.GITHUB_CLIENT_SECRET!,
   callbackURL: `${process.env.HOST_URL}/api/auth/github/callback`,
 }, (accessToken: string, refreshToken: string, profile: any, done: any) => {
+  console.log("strat profile",profile)
   if (profile) {
     const {id, username, provider} = profile;
     CredentialRepo.find(id, username, provider).then((auth_user) => {
+      console.log("strat auth_user",auth_user)
       if (auth_user) {
         const { id, user_id } = auth_user;
         return done(null, {

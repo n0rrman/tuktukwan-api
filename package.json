@@ -16,9 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "@koa/cors": "^5.0.0",
-    "@types/koa__cors": "^5.0.0",
-    "@types/passport-facebook": "^3.0.3",
-    "@types/passport-local": "^1.0.38",
     "down": "^0.2.5",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
@@ -44,6 +41,9 @@
   "devDependencies": {
     "@types/koa": "^2.15.0",
     "@types/koa-bodyparser": "^4.3.12",
+    "@types/koa__cors": "^5.0.0",
+    "@types/passport-facebook": "^3.0.3",
+    "@types/passport-local": "^1.0.38",
     "@types/koa-generic-session": "^2.2.4",
     "@types/koa-passport": "^6.0.3",
     "@types/koa-redis": "^4.0.5",

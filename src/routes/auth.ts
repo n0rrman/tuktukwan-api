@@ -11,17 +11,19 @@ const successfulLogin = (ctx: ParameterizedContext) => {}
 const createAccount = (ctx: ParameterizedContext) => {}
 
 const failedLogin = (ctx: ParameterizedContext) => {
-    ctx.redirect("/api/auth/failed")
+    ctx.status=400;
+    ctx.redirect("/")
 }
 
 
-// Google
+// discord
 router.get('/api/auth/discord', async (ctx, next) => {
     await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
 });
 
 router.get('/api/auth/discord/callback', async (ctx, next) => {
     await passport.authenticate('discord', async (err, user) => {
+        console.log("init callback",user)
         if (user) {
         console.log("authenticated with discord")
             console.log(user)
@@ -29,6 +31,7 @@ router.get('/api/auth/discord/callback', async (ctx, next) => {
             ctx.redirect("/api/auth/status")
             console.log("logged in:",ctx.isAuthenticated())
         } else {
+            console.log("failed callback",user)
             failedLogin(ctx)
         }
     })(ctx, next)
@@ -53,7 +56,7 @@ router.get('/api/auth/discord/callback', async (ctx, next) => {
             console.log("logged in:",ctx.isAuthenticated())
         } else {
             console.log("authenticated with github FAILED")        
-            ctx.redirect("/api/auth/failed")
+            failedLogin(ctx)
         }
     })(ctx, next)
     });
@@ -68,8 +71,7 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
     successReturnToOrRedirect: '/api/auth/status',
     failureRedirect: '/api'       
 }, async (err, user) => {
-    console.log("req:",ctx.req)
-    console.log("res:",ctx.res)
+    console.log("init callback",user)
     // console.log(ctx)
     if (user) {
         console.log("authenticated with google")
@@ -79,7 +81,8 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
         console.log("logged in:",ctx.isAuthenticated())
     } else {
         console.log("authenticated with google FAILED")        
-        ctx.redirect("/api/auth/failed")
+        console.log("failed callback",user)
+        failedLogin(ctx)
     }
 })(ctx, next)
 });
@@ -124,7 +127,7 @@ router.post('/login', async (ctx, next) => {
             console.log("logged in:",ctx.isAuthenticated())
         } else {
             console.log("authenticated with discord FAILED")        
-            ctx.redirect("/api/auth/failed")
+            failedLogin(ctx)
         }
     })(ctx, next)
     });
