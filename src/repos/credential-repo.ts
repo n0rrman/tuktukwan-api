@@ -5,6 +5,11 @@ export default class CredentialRepo {
   
   static async authenticate(auth_id: string, username: string, pictureURL: string, provider: string) {
     const row = await CredentialRepo.find(auth_id, provider)
+
+    if (!row) {
+      return row
+    }
+
     if ((row.auth_username != username) || (row.auth_pictureURL != pictureURL)) {
       console.log("credential updated")
       db.query(`
