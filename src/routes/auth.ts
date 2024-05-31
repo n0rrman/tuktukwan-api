@@ -67,11 +67,9 @@ router.get('/api/auth/github/callback', async (ctx, next) => {
     }, async (err, user) => {
         console.log("github auth_user:", user)
         if (user) {
-            onSuccessfulLogin(ctx, user);
-        } else {
-            onFailedLogin(ctx)
+            await ctx.login(user);
         }
-        await next()
+        ctx.redirect("/")
     })(ctx, next)
 });
 
@@ -88,10 +86,9 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
     }, async (err, user) => {
         console.log("google auth_user:", user)
         if (user) {
-            onSuccessfulLogin2(ctx, user);
-        } else {
-            onFailedLogin(ctx)
+            await ctx.login(user);
         }
+        ctx.redirect("/")
         await next()
     })(ctx, next)
 });
@@ -109,10 +106,9 @@ router.get('/api/auth/microsoft/callback', async (ctx, next) => {
     }, async (err, user) => {
         console.log("microsoft auth_user:", user)
         if (user) {
-            onSuccessfulLogin(ctx, user);
-        } else {
-            onFailedLogin(ctx)
+            await ctx.login(user);
         }
+        ctx.redirect("https://tuktukwan.henriknorrman.com/")
         await next()
     })(ctx, next)
 });
