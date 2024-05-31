@@ -19,15 +19,17 @@ const emptyUser: User = {
 
 
 const onSuccessfulLogin = async (ctx: ParameterizedContext, user: User) => {
-    console.log("logged in:",ctx.isAuthenticated())
     ctx.status=200;
     await ctx.login(user);
-    
+} 
+const onSuccessfulLogin2 = async (ctx: ParameterizedContext, user: User) => {
+    ctx.status=200;
+    await ctx.login(user);
+    ctx.redirect("back")
 } 
 
 
 const onFailedLogin = (ctx: ParameterizedContext) => {
-    console.log("logged in:",ctx.isAuthenticated())
     ctx.status=400;
 }
 
@@ -39,8 +41,10 @@ router.get('/api/auth/discord', async (ctx, next) => {
 router.get('/api/auth/discord/callback', async (ctx, next) => {
     await passport.authenticate('discord', {
         successReturnToOrRedirect: '/',
-        failureRedirect: '/'       
+        failureRedirect: '/',
+        keepSessionInfo: true       
     }, async (err, user) => {
+        console.log("discord auth_user:", user)
         if (user) {
             onSuccessfulLogin(ctx, user);
         } else {
@@ -58,8 +62,10 @@ router.get('/api/auth/github', async (ctx, next) => {
 router.get('/api/auth/github/callback', async (ctx, next) => {
     await passport.authenticate('github', {
         successReturnToOrRedirect: '/',
-        failureRedirect: '/'       
+        failureRedirect: '/',
+        keepSessionInfo: true       
     }, async (err, user) => {
+        console.log("github auth_user:", user)
         if (user) {
             onSuccessfulLogin(ctx, user);
         } else {
@@ -77,10 +83,12 @@ router.get('/api/auth/google', async (ctx, next) => {
 router.get('/api/auth/google/callback', async (ctx, next) => {
     await passport.authenticate('google', {
         successReturnToOrRedirect: '/',
-        failureRedirect: '/'       
+        failureRedirect: '/',
+        keepSessionInfo: true
     }, async (err, user) => {
+        console.log("google auth_user:", user)
         if (user) {
-            onSuccessfulLogin(ctx, user);
+            onSuccessfulLogin2(ctx, user);
         } else {
             onFailedLogin(ctx)
         }
@@ -96,8 +104,10 @@ router.get('/api/auth/microsoft', async (ctx, next) => {
 router.get('/api/auth/microsoft/callback', async (ctx, next) => {
     await passport.authenticate('microsoft', {
         successReturnToOrRedirect: '/',
-        failureRedirect: '/'       
+        failureRedirect: '/',
+        keepSessionInfo: true    
     }, async (err, user) => {
+        console.log("microsoft auth_user:", user)
         if (user) {
             onSuccessfulLogin(ctx, user);
         } else {
@@ -120,6 +130,7 @@ router.post('/login', async (ctx, next) => {
         } else {
             console.log("FAILED authenticated with github")
         }
+        await next()
     }
 )(ctx, next)
 });
