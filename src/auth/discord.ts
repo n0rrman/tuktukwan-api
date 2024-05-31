@@ -6,7 +6,7 @@ const strategy = new DiscordStrategy({
   clientID: process.env.DISCORD_CLIENT_ID!,
   clientSecret: process.env.DISCORD_CLIENT_SECRET!,
   callbackURL: `${process.env.HOST_URL}/api/auth/discord/callback`,
-  scope: ['identify', 'email'],
+  scope: ['identify'],
   // passReqToCallback: true
   }, (a, b, c, d) => {
     console.log("a:",a)

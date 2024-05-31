@@ -1,7 +1,6 @@
 import Router from "koa-router";
 
 import { passport } from "../auth/passport";
-import { ParameterizedContext } from "koa";
 
 const router = new Router();
 
@@ -18,25 +17,11 @@ const emptyUser: User = {
 }
 
 
-const onSuccessfulLogin = async (ctx: ParameterizedContext, user: User) => {
-    ctx.status=200;
-    await ctx.login(user);
-} 
-const onSuccessfulLogin2 = async (ctx: ParameterizedContext, user: User) => {
-    ctx.status=200;
-    await ctx.login(user);
-    ctx.redirect("back")
-} 
-
-
-const onFailedLogin = (ctx: ParameterizedContext) => {
-    ctx.status=400;
-}
-
-
 // Discord
 router.get('/api/auth/discord', async (ctx, next) => {
-    await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
+    ctx.redirect("https://discord.com/oauth2/authorize?client_id=1245246391329226765&response_type=code&redirect_uri=https%3A%2F%2Ftuktukwan.henriknorrman.com%2Fapi%2Fauth%2Fdiscord%2Fcallback&scope=identify")
+    await next()
+    // await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
 });
 router.get('/api/auth/discord/callback', async (ctx, next) => {
     await passport.authenticate('discord', {
@@ -46,10 +31,9 @@ router.get('/api/auth/discord/callback', async (ctx, next) => {
     }, async (err, user) => {
         console.log("discord auth_user:", user)
         if (user) {
-            onSuccessfulLogin(ctx, user);
-        } else {
-            onFailedLogin(ctx)
+            await ctx.login(user);
         }
+        ctx.redirect("/")
         await next()
     })(ctx, next)
 });
@@ -70,6 +54,7 @@ router.get('/api/auth/github/callback', async (ctx, next) => {
             await ctx.login(user);
         }
         ctx.redirect("/")
+        await next()
     })(ctx, next)
 });
 
@@ -108,7 +93,7 @@ router.get('/api/auth/microsoft/callback', async (ctx, next) => {
         if (user) {
             await ctx.login(user);
         }
-        ctx.redirect("https://tuktukwan.henriknorrman.com/")
+        ctx.redirect("/")
         await next()
     })(ctx, next)
 });
