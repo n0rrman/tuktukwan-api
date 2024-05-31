@@ -7,33 +7,29 @@ const strategy = new DiscordStrategy({
   clientSecret: process.env.DISCORD_CLIENT_SECRET!,
   callbackURL: `${process.env.HOST_URL}/api/auth/discord/callback`,
   scope: ['identify'],
-  }, (a, b, c, d) => {
-    console.log("a:",a)
-    console.log("b:",b)
-    console.log("c:",c)
-    console.log("d:",d)
-    // console.log("e:",e)
-  // if (profile) {
-  //   const {id, username, provider} = profile;
-  //   CredentialRepo.find(id, username, provider).then((auth_user) => {
-  //     if (auth_user) {
-  //       const { id, user_id } = auth_user;
-  //       return done(null, {
-  //         token: accessToken, 
-  //         credential_id: id, 
-  //         user_id: user_id 
-  //       });
-  //     } else {
-  //       CredentialRepo.insert(id, username, provider);
-  //       return done(null, {
-  //         token: accessToken, 
-  //         credential_id: id, 
-  //         user_id: null 
-  //       })
-  //     }
-  //   })
-  // } 
-  return d(null, false)
+}, (accessToken: string, refreshToken: string, profile: any, done: any) => {
+  if (profile) {
+    const {id, username, provider} = profile;
+    CredentialRepo.find(id, username, provider).then((auth_user) => {
+      if (auth_user) {
+        const { id, user_id } = auth_user;
+        return done(null, {
+          token: accessToken, 
+          credential_id: id, 
+          user_id: user_id 
+        });
+      } else {
+        CredentialRepo.insert(id, username, provider);
+        return done(null, {
+          token: accessToken, 
+          credential_id: id, 
+          user_id: null 
+        })
+      }
+    })
+  } else {
+    return done(null, false)
+  }
 });
 
 export { strategy as discordStrategy }
