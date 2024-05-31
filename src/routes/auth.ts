@@ -18,19 +18,17 @@ const emptyUser: User = {
 }
 
 
-const successfulLogin = async (ctx: ParameterizedContext, user: User) => {
+const onSuccessfulLogin = async (ctx: ParameterizedContext, user: User) => {
     console.log("logged in:",ctx.isAuthenticated())
     ctx.status=200;
     await ctx.login(user);
-    ctx.redirect("/")
     
 } 
 
 
-const failedLogin = (ctx: ParameterizedContext) => {
+const onFailedLogin = (ctx: ParameterizedContext) => {
     console.log("logged in:",ctx.isAuthenticated())
     ctx.status=400;
-    ctx.redirect("/")
 }
 
 
@@ -39,11 +37,14 @@ router.get('/api/auth/discord', async (ctx, next) => {
     await passport.authenticate('discord', { scope: ['profile'] })(ctx, next)
 });
 router.get('/api/auth/discord/callback', async (ctx, next) => {
-    await passport.authenticate('discord', async (err, user) => {
+    await passport.authenticate('discord', {
+        successReturnToOrRedirect: '/',
+        failureRedirect: '/'       
+    }, async (err, user) => {
         if (user) {
-            successfulLogin(ctx, user);
+            onSuccessfulLogin(ctx, user);
         } else {
-            failedLogin(ctx)
+            onFailedLogin(ctx)
         }
         await next()
     })(ctx, next)
@@ -55,11 +56,14 @@ router.get('/api/auth/github', async (ctx, next) => {
     await passport.authenticate('github')(ctx, next)
 });
 router.get('/api/auth/github/callback', async (ctx, next) => {
-    await passport.authenticate('github', async (err, user) => {
+    await passport.authenticate('github', {
+        successReturnToOrRedirect: '/',
+        failureRedirect: '/'       
+    }, async (err, user) => {
         if (user) {
-            successfulLogin(ctx, user);
+            onSuccessfulLogin(ctx, user);
         } else {
-            failedLogin(ctx)
+            onFailedLogin(ctx)
         }
         await next()
     })(ctx, next)
@@ -71,11 +75,14 @@ router.get('/api/auth/google', async (ctx, next) => {
     await passport.authenticate('google', { scope: ['profile', 'email'] })(ctx, next)
 });
 router.get('/api/auth/google/callback', async (ctx, next) => {
-    await passport.authenticate('google', async (err, user) => {
+    await passport.authenticate('google', {
+        successReturnToOrRedirect: '/',
+        failureRedirect: '/'       
+    }, async (err, user) => {
         if (user) {
-            successfulLogin(ctx, user);
+            onSuccessfulLogin(ctx, user);
         } else {
-            failedLogin(ctx)
+            onFailedLogin(ctx)
         }
         await next()
     })(ctx, next)
@@ -87,11 +94,14 @@ router.get('/api/auth/microsoft', async (ctx, next) => {
     await passport.authenticate('microsoft', {prompt: 'select_account'})(ctx, next)
 });
 router.get('/api/auth/microsoft/callback', async (ctx, next) => {
-    await passport.authenticate('microsoft', async (err, user) => {
+    await passport.authenticate('microsoft', {
+        successReturnToOrRedirect: '/',
+        failureRedirect: '/'       
+    }, async (err, user) => {
         if (user) {
-            successfulLogin(ctx, user);
+            onSuccessfulLogin(ctx, user);
         } else {
-            failedLogin(ctx)
+            onFailedLogin(ctx)
         }
         await next()
     })(ctx, next)
