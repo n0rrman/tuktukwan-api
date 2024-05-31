@@ -1,14 +1,12 @@
-import { Strategy as DiscordStrategy } from "passport-discord";
 import CredentialRepo from "../repos/credential-repo";
+const LineStrategy = require("passport-line").Strategy
 
-
-const strategy = new DiscordStrategy({
-  clientID: process.env.DISCORD_CLIENT_ID!,
-  clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-  callbackURL: `${process.env.HOST_URL}/api/auth/discord/callback`,
-  scope: ['identify'],
+const strategy = new LineStrategy({
+  channelID: process.env.LINE_CLIENT_ID!,
+  channelSecret: process.env.LINE_CLIENT_SECRET!,
+  callbackURL: `${process.env.HOST_URL}/api/auth/line/callback`,
 }, (accessToken: string, refreshToken: string, profile: any, done: any) => {
-  console.log("discord profile:", profile)
+  console.log("line profile:", profile)
   if (profile) {
     const {id, username, provider} = profile;
     CredentialRepo.find(id, username, provider).then((auth_user) => {
@@ -34,7 +32,7 @@ const strategy = new DiscordStrategy({
   }
 });
 
-export { strategy as discordStrategy }
+export { strategy as lineStrategy }
 
 
 

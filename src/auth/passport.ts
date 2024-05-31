@@ -5,7 +5,7 @@ import { githubStrategy } from './github';
 import { googleStrategy } from './google';
 import { microsoftStrategy } from './microsoft';
 import { localStrategy } from './local';
-import { discordStrategy } from './discord';
+import { lineStrategy } from './line';
 
 interface User {
   user_id: string,
@@ -47,7 +47,7 @@ passport.deserializeUser((user: User, done) => {
 
 passport.use("github", githubStrategy)
 passport.use("google", googleStrategy)
-passport.use("discord", discordStrategy)
+passport.use("line", lineStrategy)
 passport.use("local", localStrategy)
 passport.use("microsoft", microsoftStrategy)
 

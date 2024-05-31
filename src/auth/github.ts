@@ -1,8 +1,8 @@
-import { Strategy as GitHubStrategy } from "passport-github2";
+import { Strategy as GithubStrategy } from "passport-github2";
 import CredentialRepo from "../repos/credential-repo";
 
 
-const strategy = new GitHubStrategy({
+const strategy = new GithubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID!,
   clientSecret: process.env.GITHUB_CLIENT_SECRET!,
   callbackURL: `${process.env.HOST_URL}/api/auth/github/callback`,

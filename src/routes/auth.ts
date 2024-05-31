@@ -17,18 +17,17 @@ const emptyUser: User = {
 }
 
 
-// Discord
-router.get('/api/auth/discord', async (ctx, next) => {
-    await passport.authenticate('discord', { scope: ['identify'] })(ctx, next)
-    await next()
+// LINE
+router.get('/api/auth/line', async (ctx, next) => {
+    await passport.authenticate('line')(ctx, next)
 });
-router.get('/api/auth/discord/callback', async (ctx, next) => {
-    await passport.authenticate('discord', {
+router.get('/api/auth/line/callback', async (ctx, next) => {
+    await passport.authenticate('line', {
         successReturnToOrRedirect: '/',
         failureRedirect: '/',
         keepSessionInfo: true       
     }, async (err, user) => {
-        console.log("discord auth_user:", user)
+        console.log("line auth_user:", user)
         if (user) {
             await ctx.login(user);
         }
