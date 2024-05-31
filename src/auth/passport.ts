@@ -4,7 +4,6 @@ import { Next } from 'koa';
 import { githubStrategy } from './github';
 import { googleStrategy } from './google';
 import { microsoftStrategy } from './microsoft';
-import { localStrategy } from './local';
 import { lineStrategy } from './line';
 
 interface User {
@@ -48,7 +47,6 @@ passport.deserializeUser((user: User, done) => {
 passport.use("github", githubStrategy)
 passport.use("google", googleStrategy)
 passport.use("line", lineStrategy)
-passport.use("local", localStrategy)
 passport.use("microsoft", microsoftStrategy)
 
 export { passport };

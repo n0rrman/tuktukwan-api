@@ -97,24 +97,6 @@ router.get('/api/auth/microsoft/callback', async (ctx, next) => {
 });
 
 
-// Local
-router.post('/login', async (ctx, next) => {
-    await passport.authenticate('local', { failureRedirect: '/login' },   
-    async (err, user) => {
-        console.log("req:",ctx.req)
-        console.log("res:",ctx.res)
-        if (user) {
-            ctx.login(user)
-            console.log("authenticated with github")
-        } else {
-            console.log("FAILED authenticated with github")
-        }
-        await next()
-    }
-)(ctx, next)
-});
-
-
 // Login status
 router.get('/api/auth/status', async (ctx, next) => {
     ctx.status = 200; 

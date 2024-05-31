@@ -11,10 +11,9 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
     pgm.sql(`
     CREATE TYPE strategy AS ENUM (
-        'line',
         'github',
         'google',
-        'local',
+        'line',
         'microsoft'
       );
 
@@ -25,9 +24,8 @@ exports.up = (pgm) => {
           auth_username VARCHAR(64),
           auth_provider strategy NOT NULL,
           auth_pictureURL VARCHAR(255),
-          hash_password VARCHAR(64),
-          UNIQUE (auth_id, auth_provider),
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+          UNIQUE (auth_id, auth_provider)
       );
     `);
 };

@@ -13,19 +13,19 @@ const strategy = new MicrosoftStrategy({
     const {id, userPrincipalName, provider} = profile;
     CredentialRepo.authenticate(id, userPrincipalName, "", provider).then((auth_user) => {
       if (auth_user) {
-        const { id, user_id } = auth_user;
         return done(null, {
           token: accessToken, 
-          credential_id: id, 
-          user_id: user_id 
+          credential_id: auth_user.id, 
+          user_id: auth_user.user_id 
         });
       } else {
-        CredentialRepo.add(id, userPrincipalName, "", provider);
-        return done(null, {
-          token: accessToken, 
-          credential_id: id, 
-          user_id: null 
-        })
+        CredentialRepo.add(id, userPrincipalName, "", provider).then((new_id) => {
+          return done(null, {
+            token: accessToken, 
+            credential_id: new_id, 
+            user_id: null 
+          })
+        });
       }
     })
   } else {

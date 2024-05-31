@@ -12,25 +12,26 @@ const strategy = new LineStrategy({
     const pictureURL = profile.pictureUrl || ""
     CredentialRepo.authenticate(id, displayName, pictureURL, provider).then((auth_user) => {
       if (auth_user) {
-        const { id, user_id } = auth_user;
         return done(null, {
           token: accessToken, 
-          credential_id: id, 
-          user_id: user_id 
+          credential_id: auth_user.id, 
+          user_id: auth_user.user_id 
         });
       } else {
-        CredentialRepo.add(id, displayName, pictureURL, provider);
-        return done(null, {
-          token: accessToken, 
-          credential_id: id, 
-          user_id: null 
-        })
+        CredentialRepo.add(id, displayName, pictureURL, provider).then((new_id) => {
+          return done(null, {
+            token: accessToken, 
+            credential_id: new_id, 
+            user_id: null 
+          })
+        });
       }
     })
   } else {
     return done(null, false)
   }
 });
+
 
 export { strategy as lineStrategy }
 

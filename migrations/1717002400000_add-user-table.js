@@ -10,13 +10,13 @@ exports.shorthands = undefined;
  */
 exports.up = (pgm) => {
     pgm.sql(`
-      CREATE TABLE "user"(
+        CREATE TABLE "user"(
             id SERIAL PRIMARY KEY,
             username VARCHAR(32) UNIQUE NOT NULL,
             display_name VARCHAR(64),
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      );
+        );
     `);
 };
 

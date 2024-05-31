@@ -9,23 +9,23 @@ const strategy = new GithubStrategy({
 }, (accessToken: string, refreshToken: string, profile: any, done: any) => {
   console.log("github profile:", profile)
   if (profile) {
-    const {id, username, provider} = profile;
+    const { id, username, provider } = profile;
     const pictureURL = profile._json.avatar_url || ""
     CredentialRepo.authenticate(id, username, pictureURL, provider).then((auth_user) => {
       if (auth_user) {
-        const { id, user_id } = auth_user;
         return done(null, {
           token: accessToken, 
-          credential_id: id, 
-          user_id: user_id 
+          credential_id: auth_user.id, 
+          user_id: auth_user.user_id 
         });
       } else {
-        CredentialRepo.add(id, username, pictureURL, provider);
-        return done(null, {
-          token: accessToken, 
-          credential_id: id, 
-          user_id: null 
-        })
+        CredentialRepo.add(id, username, pictureURL, provider).then((new_id) => {
+          return done(null, {
+            token: accessToken, 
+            credential_id: new_id, 
+            user_id: null 
+          })
+        });
       }
     })
   } else {
