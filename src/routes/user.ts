@@ -12,11 +12,11 @@ interface User {
 }
 
 router.get('/api/user/check', async (ctx, next) => {
-    if (ctx.isAuthenticated()) {
+    const { username, email, key } = ctx.request.header;
+    if (key === process.env.SERVER_AUTH_KEY!) {
         ctx.status = 200
 
         let status = { };
-        const { username, email } = ctx.request.header;
         if (username) {
             status = { ...status, username: !!( await UserRepo.findByUsername(username.toString())) }
         } 
