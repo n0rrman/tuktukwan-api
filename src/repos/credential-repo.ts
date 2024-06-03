@@ -12,6 +12,8 @@ export default class CredentialRepo {
 
     if ((row?.auth_username != auth_username) || (row?.auth_pictureURL != pictureURL)) {
       console.log("credential updated")
+      console.log(row.auth_username, " -> ", auth_username)
+      console.log(row.auth_pictureURL, " -> ", pictureURL)
       db.query(`
         UPDATE credential
         SET auth_username=$1, auth_pictureURL=$2
