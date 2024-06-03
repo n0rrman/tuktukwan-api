@@ -47,6 +47,17 @@ export default class CredentialRepo {
 
     return rows[0].id;
   };
+
+  static async linkUser(auth_id: string, user_id: string, verified: boolean) {
+    const { rows } = await db.query(`
+      UPDATE credential
+      SET user_id=$1, user_verified=$3
+      WHERE auth_id=$2
+    `, [ auth_id, user_id, verified ])
+
+    return rows[0];
+  }
+
   
   static update(){};
   static delete(){};

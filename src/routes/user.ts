@@ -1,4 +1,6 @@
 import Router from "koa-router";
+import UserRepo from "../repos/user-repo";
+import CredentialRepo from "../repos/credential-repo";
 
 
 const router = new Router();
@@ -9,12 +11,27 @@ interface User {
     credential_id: string;
 }
 
+router.get('/api/user/check', async (ctx, next) => {
+    if (ctx.isAuthenticated()) {
+        ctx.status = 200
 
-const emptyUser: User = {
-    user_id: "",
-    token: "",
-    credential_id: "",
-}
+        let status = { };
+        const { username, email } = ctx.request.header;
+        if (username) {
+            status = { ...status, username: !!( await UserRepo.findByUsername(username.toString())) }
+        } 
+        
+        if (email) {
+            status = { ...status, email: !!(await UserRepo.findByEmail(email.toString())) }
+        }
+
+        ctx.body = status
+    } else {
+        ctx.status = 400
+    }
+
+    await next();
+})
 
 router.post('/api/user/new', async (ctx, next) => { 
     if (ctx.isAuthenticated()) {
@@ -24,13 +41,15 @@ router.post('/api/user/new', async (ctx, next) => {
         const requiredUserParams = !!token && !!credential_id && !user_id;
         const requiredHeaders = !!username && !!display_name && !!email;
         if (requiredUserParams && requiredHeaders) {
+            const userId = await UserRepo.add(username.toString(), display_name.toString(), email.toString());
             const newUser = {
-                user_id: 1206,
+                user_id: userId,
                 token,
                 credential_id
             }
             await ctx.logout()
             await ctx.login(newUser)
+            await CredentialRepo.linkUser(credential_id, user_id, true)
         }
     } else {
         ctx.status = 401

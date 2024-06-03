@@ -20,6 +20,7 @@ exports.up = (pgm) => {
       CREATE TABLE credential(
           id SERIAL PRIMARY KEY,
           user_id INT REFERENCES "user"(id),
+          user_verified BOOLEAN,
           auth_id VARCHAR(64) NOT NULL,
           auth_username VARCHAR(64),
           auth_provider strategy NOT NULL,

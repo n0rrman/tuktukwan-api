@@ -7,7 +7,6 @@ import cors from '@koa/cors';
 import { passportMiddleware } from "./auth/passport";
 import { consonantRouter } from "./routes/consonant";
 import { authRouter } from "./routes/auth";
-import { redirectRouter } from "./routes/redirect";
 import { userRouter } from "./routes/user";
 
 
@@ -33,9 +32,7 @@ app.use(passportMiddleware);
 // Routes
 app.use(authRouter.routes());
 app.use(consonantRouter.routes());
-app.use(redirectRouter.routes());
 app.use(userRouter.routes());
 app.use(authRouter.allowedMethods());
 app.use(consonantRouter.allowedMethods());
-app.use(redirectRouter.allowedMethods());
 app.use(userRouter.allowedMethods());
