@@ -24,7 +24,7 @@ exports.up = (pgm) => {
           auth_id VARCHAR(64) NOT NULL,
           auth_username VARCHAR(64),
           auth_provider strategy NOT NULL,
-          auth_pictureURL VARCHAR(255),
+          auth_picture VARCHAR(255),
           created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
           UNIQUE (auth_id, auth_provider)
       );

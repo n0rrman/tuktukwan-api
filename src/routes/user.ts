@@ -13,6 +13,9 @@ interface User {
 
 router.get('/api/user/check', async (ctx, next) => {
     const { username, email, key } = ctx.request.header;
+    console.log(username)
+    console.log(email)
+    console.log(key)
     if (key === process.env.SERVER_AUTH_KEY!) {
         ctx.status = 200
 
@@ -32,6 +35,25 @@ router.get('/api/user/check', async (ctx, next) => {
 
     await next();
 })
+
+router.post('/api/user/link', async (ctx, next) => { 
+    if (ctx.isAuthenticated()) {
+        ctx.status = 200
+        const { token, credential_id, user_id } = ctx.state.user
+        const { username, email } = ctx.request.header;
+        const requiredUserParams = !!token && !!credential_id && !user_id;
+        const requiredHeaders = !!username && !!email;
+        if (requiredUserParams && requiredHeaders) {
+            const user = await UserRepo.findByUsernameAndEmail(username.toString(), email.toString());
+            await CredentialRepo.linkUser(credential_id, user.id, false)
+            await ctx.logout()
+        }
+    } else {
+        ctx.status = 401
+    }
+    
+    await next();
+});
 
 router.post('/api/user/new', async (ctx, next) => { 
     if (ctx.isAuthenticated()) {
