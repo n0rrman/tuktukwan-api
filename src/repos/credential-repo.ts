@@ -19,17 +19,16 @@ export default class CredentialRepo {
       `, [auth_username, picture, auth_id, auth_provider]);
     }
 
-    return { id: row.id, user_id: row.user_id }
+    return { id: row.id, user_id: row.user_verified ? row.user_id : "" }
   }
 
   
   static async find(auth_id: string, provider: string) {
     const { rows } = await db.query(`
-    SELECT id, user_id, auth_username, auth_picture
+    SELECT id, user_id, auth_username, auth_picture, user_verified
     FROM credential
     WHERE auth_id = $1
       AND auth_provider = $2
-      AND user_verified = true
     `, [ auth_id, provider ]);
 
     return rows[0];
