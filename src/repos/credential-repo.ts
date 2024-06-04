@@ -51,7 +51,10 @@ export default class CredentialRepo {
     return rows[0].id;
   };
 
-  static async linkUser(credential_id: string, user_id: string, verified: boolean) {
+  static async linkUser(credential_id: string, user_id: number, verified: boolean) {
+    console.log("cid",credential_id)
+    console.log("uid",user_id)
+    console.log("v",verified)
     const { rows } = await db.query(`
       UPDATE credential
       SET user_id=$2, user_verified=$3

@@ -63,7 +63,7 @@ router.post('/api/user/new', async (ctx, next) => {
         const requiredUserParams = !!token && !!credential_id && !user_id;
         const requiredHeaders = !!username && !!display_name && !!email;
         if (requiredUserParams && requiredHeaders) {
-            const userId = await UserRepo.add(username.toString(), display_name.toString(), email.toString());
+            const userId: number = await UserRepo.add(username.toString(), display_name.toString(), email.toString());
             const newUser = {
                 user_id: userId,
                 token,
