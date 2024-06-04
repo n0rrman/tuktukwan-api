@@ -9,12 +9,8 @@ export default class CredentialRepo {
     if (!row) {
       return null
     }
-    console.log("current row:", row)
 
     if ((row?.auth_username != auth_username) || (row?.auth_picture != picture)) {
-      console.log("credential updated")
-      console.log(row.auth_username, " -> ", auth_username)
-      console.log(row.auth_pictureURL, " -> ", picture)
       db.query(`
         UPDATE credential
         SET auth_username=$1, auth_picture=$2
@@ -33,9 +29,9 @@ export default class CredentialRepo {
     FROM credential
     WHERE auth_id = $1
       AND auth_provider = $2
+      AND user_verified = true
     `, [ auth_id, provider ]);
 
-    console.log("returned row: ", rows[0])
     return rows[0];
   }
 
@@ -52,9 +48,6 @@ export default class CredentialRepo {
   };
 
   static async linkUser(credential_id: string, user_id: number, verified: boolean) {
-    console.log("cid",credential_id)
-    console.log("uid",user_id)
-    console.log("v",verified)
     const { rows } = await db.query(`
       UPDATE credential
       SET user_id=$2, user_verified=$3
