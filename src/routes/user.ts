@@ -63,7 +63,7 @@ router.post('/api/user/new', async (ctx, next) => {
         const requiredUserParams = !!token && !!credential_id && !user_id;
         const requiredHeaders = !!username && !!display_name && !!email;
         if (requiredUserParams && requiredHeaders) {
-            const userId: number = await UserRepo.add(username.toString(), display_name.toString(), email.toString());
+            const userId = await UserRepo.add(username.toString(), display_name.toString(), email.toString());
             const newUser = {
                 user_id: userId,
                 token,
@@ -71,7 +71,7 @@ router.post('/api/user/new', async (ctx, next) => {
             }
             await ctx.logout()
             await ctx.login(newUser)
-            await CredentialRepo.linkUser(credential_id, user_id, true)
+            await CredentialRepo.linkUser(credential_id, userId, true)
         }
     } else {
         ctx.status = 401
