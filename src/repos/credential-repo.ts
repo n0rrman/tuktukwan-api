@@ -56,6 +56,16 @@ export default class CredentialRepo {
     return rows[0];
   }
 
+  static async allOptions(user_id: number) {
+    const { rows } = await db.query(`
+      SELECT *
+      FROM credential 
+      WHERE user_id = $1
+    `, [ user_id ])
+  
+    return rows;
+  }
+
   
   static update(){};
   static delete(){};

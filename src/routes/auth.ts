@@ -1,6 +1,7 @@
 import Router from "koa-router";
 
 import { passport } from "../auth/passport";
+import CredentialRepo from "../repos/credential-repo";
 
 const router = new Router();
 
@@ -94,6 +95,20 @@ router.get('/api/auth/microsoft/callback', async (ctx, next) => {
         ctx.redirect("/")
         await next()
     })(ctx, next)
+});
+
+
+// Get all credential options for authenticated in user
+router.get('/api/auth/options', async (ctx, next) => {
+    const { user_id } = ctx.state.user;
+    if (ctx.isAuthenticated() && user_id) {
+        ctx.status = 200;  
+        const options = await CredentialRepo.allOptions(user_id)
+        ctx.body = options; 
+    } else {
+        ctx.status = 401; 
+    }
+    await next();
 });
 
 
