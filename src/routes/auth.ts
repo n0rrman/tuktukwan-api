@@ -99,9 +99,9 @@ router.get('/api/auth/microsoft/callback', async (ctx, next) => {
 
 
 // Get all credential options for authenticated in user
-router.get('/api/auth/options', async (ctx, next) => {
+router.get('/api/auth/credentials', async (ctx, next) => {
     const { user_id } = ctx.state.user;
-    if (ctx.isAuthenticated() && user_id) {
+    if (ctx.isAuthenticated() && !!user_id) {
         ctx.status = 200;  
         const options = await CredentialRepo.allOptions(user_id)
         ctx.body = options; 
