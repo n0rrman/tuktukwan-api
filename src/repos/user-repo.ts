@@ -4,9 +4,13 @@ import { db } from "../database";
 export default class UserRepo {
 
   static async findById(id: string) {
-    const { rows } = await db.query('SELECT * FROM "user" WHERE id = $1;', [
-      id,
-    ]);
+    const { rows } = await db.query(`
+      SELECT "user".id, username, display_name, email, created_at, auth_picture
+      FROM "user" 
+      JOIN credential
+      ON "user".picture = credential.id
+      WHERE "user".id = $1
+    `, [ id ]);
 
     return rows[0];
   }
@@ -51,6 +55,7 @@ export default class UserRepo {
 
     return rows[0].id;
   } 
+
 
 
   static update(){};

@@ -19,13 +19,13 @@ export default class CredentialRepo {
       `, [auth_username, picture, auth_id, auth_provider]);
     }
 
-    return { id: row.id, user_id: row.user_verified ? row.user_id : "" }
+    return { id: row.id, user_id: row.user_id }
   }
 
   
   static async find(auth_id: string, provider: string) {
     const { rows } = await db.query(`
-    SELECT id, user_id, auth_username, auth_picture, user_verified
+    SELECT id, user_id, auth_username, auth_picture
     FROM credential
     WHERE auth_id = $1
       AND auth_provider = $2
@@ -46,12 +46,12 @@ export default class CredentialRepo {
     return rows[0].id;
   };
 
-  static async linkUser(credential_id: string, user_id: number, verified: boolean) {
+  static async linkUser(credential_id: string, user_id: number) {
     const { rows } = await db.query(`
       UPDATE credential
-      SET user_id=$2, user_verified=$3
+      SET user_id=$2
       WHERE id=$1
-    `, [ credential_id, user_id, verified ])
+    `, [ credential_id, user_id])
 
     return rows[0];
   }

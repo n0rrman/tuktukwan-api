@@ -1,16 +1,12 @@
 import passport from 'koa-passport';
 import { Next } from 'koa';
 
+import { User } from './general';
 import { githubStrategy } from './github';
 import { googleStrategy } from './google';
 import { microsoftStrategy } from './microsoft';
 import { lineStrategy } from './line';
 
-interface User {
-  user_id: string,
-  token: string,
-  credential_id: string,
-}
 
 export const passportMiddleware = async (ctx: any, next: Next) => {
   if (ctx.session && !ctx.session.regenerate) {

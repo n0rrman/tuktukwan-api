@@ -2,6 +2,7 @@ import { db } from "../database";
 
 
 export default class ConsonantRepo {
+  
   static async find() {
     const { rows } = await db.query('SELECT * FROM consonant;');
 

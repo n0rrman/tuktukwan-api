@@ -15,6 +15,7 @@ exports.up = (pgm) => {
             username VARCHAR(32) UNIQUE NOT NULL,
             display_name VARCHAR(64),
             email VARCHAR(64),
+            picture INT DEFAULT 0,
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );

@@ -16,7 +16,7 @@ const strategy = new GithubStrategy({
   } else {
     return done(null, false)
   }
-  });
+});
   
 
 export { strategy as githubStrategy }
