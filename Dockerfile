@@ -43,7 +43,7 @@ ENV HOST_URL=$HOST_URL
 
 
 COPY package.json ./
-ENV NODE_ENV production
+# ENV NODE_ENV production
 RUN yarn --frozen-lockfile
 COPY --from=builder /app/build ./
 COPY package.json ./migrations ./

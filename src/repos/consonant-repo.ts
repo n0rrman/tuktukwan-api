@@ -16,9 +16,5 @@ export default class ConsonantRepo {
 
     return (rows)[0];
   }
-
-  static insert(){};
-  static update(){};
-  static delete(){};
 }
 

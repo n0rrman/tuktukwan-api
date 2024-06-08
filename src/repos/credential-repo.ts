@@ -66,16 +66,11 @@ export default class CredentialRepo {
     return rows;
   }
 
-  
-  static update(){};
-  static delete(){};
+  static async unlinkUser(user_id: number, credential_id: string) {
+    await db.query(`
+      DELETE FROM credential
+      WHERE user_id = $1
+        AND id = $2
+    `, [ user_id, credential_id ])
+  }
 }
-
-
-
-// id SERIAL PRIMARY KEY,
-// username VARCHAR(64) REFERENCES "user"(username),
-// password_hash VARCHAR(255),
-// login_strategy strategy,
-// login_id VARCHAR(128),
-// login_username VARCHAR(128)

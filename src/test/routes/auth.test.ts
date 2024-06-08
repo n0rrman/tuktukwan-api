@@ -1,5 +1,5 @@
 // import request from 'supertest';
-// import buildApp from '../../app';
+// // import buildApp from '../../app';
 // import UserRepo from '../../repos/user-repo';
 // import pool from '../../pool';
 // import Context from '../context';
@@ -16,6 +16,9 @@
 // afterAll(() => {
 //   return context.close();
 // });
+it('test ', async () => {
+    return true
+})
 
 
 // it('create a user', async () => {

@@ -7,6 +7,8 @@ services:
     restart: always
     networks:
       - api
+    environment:
+      - NODE_ENV=development
     env_file: 
       - .env.local
       - .env
