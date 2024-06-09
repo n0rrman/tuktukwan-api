@@ -7,7 +7,7 @@ export interface User {
   }
 
 export const authenticate = async (accessToken: string, id: string, username: string, picture: string, provider: string) => {
-    return CredentialRepo.authenticate(id, username, picture, provider).then((auth_user) => {
+    return await CredentialRepo.authenticate(id, username, picture, provider).then((auth_user => {
         if (auth_user) {
             return {
                 user_id: auth_user.user_id,
@@ -15,7 +15,7 @@ export const authenticate = async (accessToken: string, id: string, username: st
                 credential_id: auth_user.id, 
             };
         } else {
-            CredentialRepo.add(id, username, picture, provider).then((new_id) => {
+            return CredentialRepo.add(id, username, picture, provider).then((new_id) => {
                 return {
                 user_id: null, 
                 token: accessToken, 
@@ -23,5 +23,5 @@ export const authenticate = async (accessToken: string, id: string, username: st
                 }
             })
         }
-    })
+    }))
 }

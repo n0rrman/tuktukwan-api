@@ -14,7 +14,7 @@ import { userRouter } from "./routes/user";
 export const app = new Koa();
 app.keys = [process.env.SERVER_KEY!];
 app.use(bodyParser());
-app.use(cors());
+app.use(cors({ credentials: true }));
 
 
 // Redis store

@@ -5,13 +5,14 @@ export default class UserRepo {
 
   static async findById(id: string) {
     const { rows } = await db.query(`
-      SELECT "user".id, username, display_name, email, created_at, auth_picture
+      SELECT "user".id, username, display_name, email, "user".created_at
       FROM "user" 
-      JOIN credential
+      LEFT JOIN credential
       ON "user".picture = credential.id
       WHERE "user".id = $1
-    `, [ id ]);
+      `, [ id ]);
 
+    console.log(rows[0])
     return rows[0];
   }
 
