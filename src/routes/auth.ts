@@ -94,6 +94,9 @@ router.get('/api/auth/github/callback', async (ctx, next) => {
         keepSessionInfo: true       
     }, async (err, user) => {
         console.log("github auth_user:", user)
+        console.log("ctx:", ctx)
+        console.log("session:", ctx.session?.authUser)
+        console.log("state:", ctx.state.authUser)
         if (user) {
             await ctx.login(user);
         }
