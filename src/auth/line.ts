@@ -10,6 +10,7 @@ const strategy = new LineStrategy({
 }, async (req: any, accessToken: string, refreshToken: string, profile: any, done: any) => {
   console.log("line profile:", profile)
   if (profile) {
+    console.log(req)
     const { id, displayName, provider } = profile;
     const pictureURL = profile.pictureUrl || ""
     return done(null, await authenticate(accessToken, id, displayName, pictureURL, provider))

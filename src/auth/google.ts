@@ -10,6 +10,7 @@ const strategy = new GoogleStrategy({
 }, async (req, accessToken, refreshToken, profile, done) => {
   console.log("google profile:", profile)
   if (profile) {
+    console.log(req)
     const { id, displayName, provider } = profile;
     const pictureURL = profile._json.picture || ""
     return done(null, await authenticate(accessToken, id, displayName, pictureURL, provider))

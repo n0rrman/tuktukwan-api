@@ -11,6 +11,7 @@ const strategy = new MicrosoftStrategy({
 }, async (req: any, accessToken: string, refreshToken: string, profile: any, done: any) => {
   console.log("microsoft profile:", profile)
   if (profile) {
+    console.log(req)
     const {id, userPrincipalName, provider} = profile;
     return done(null, await authenticate(accessToken, id, userPrincipalName, "", provider))
   } else {

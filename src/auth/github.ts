@@ -10,6 +10,7 @@ const strategy = new GithubStrategy({
 }, async (req: any, accessToken: string, refreshToken: string, profile: any, done: any) => {
   console.log("github profile:", profile)
   if (profile) {
+    console.log(req)
     const { id, username, provider } = profile;
     const pictureURL = profile._json.avatar_url || ""
     return done(null, await authenticate(accessToken, id, username, pictureURL, provider))
