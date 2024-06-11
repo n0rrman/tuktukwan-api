@@ -16,7 +16,6 @@ const strategy = new GithubStrategy({
     // if (req.user) {
       req.authUser = {user: req.user, method: "/"} ;
       req.session.authUser = {user: req.user, method: "session"}
-      req.state.authUser = { user: req.user, method: "state"}
     //   return done(null, await )
     // } else {
       return done(null, await authenticate(accessToken, id, username, pictureURL, provider))
