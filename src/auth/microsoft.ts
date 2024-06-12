@@ -17,7 +17,7 @@ const strategy = new MicrosoftStrategy({
     const user = await authenticate(accessToken, id, userPrincipalName, "", provider) 
     if (req.user && !user.user_id) {
       req.session.linkEvent = true;
-      CredentialRepo.linkUser(id, req.user.user_id);
+      CredentialRepo.linkUser(user.credential_id, req.user.user_id);
       return done(null, req.user)
     } else {
       return done(null, user)
