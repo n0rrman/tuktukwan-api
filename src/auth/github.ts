@@ -1,5 +1,6 @@
 import { Strategy as GithubStrategy } from "passport-github2";
 import { authenticate } from "./general";
+import CredentialRepo from "../repos/credential-repo";
 
 
 const strategy = new GithubStrategy({
@@ -13,13 +14,14 @@ const strategy = new GithubStrategy({
     console.log(req.user)
     const { id, username, provider } = profile;
     const pictureURL = profile._json.avatar_url || ""
-    // if (req.user) {
-      req.authUser = {user: req.user, method: "/"} ;
-      req.session.authUser = {user: req.user, method: "session"}
-    //   return done(null, await )
-    // } else {
-      return done(null, await authenticate(accessToken, id, username, pictureURL, provider))
-    // }
+    const user = await authenticate(accessToken, id, username, pictureURL, provider) 
+      if (req.user && !user.user_id) {
+        req.session.linkEvent = true;
+        CredentialRepo.linkUser(id, req.user.user_id);
+        return done(null, req.user)
+      } else {
+        return done(null, user)
+      }
   } else {
     return done(null, false)
   }

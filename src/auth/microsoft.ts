@@ -1,5 +1,6 @@
 import { Strategy as MicrosoftStrategy } from "passport-microsoft";
 import { authenticate } from "./general";
+import CredentialRepo from "../repos/credential-repo";
 
 
 const strategy = new MicrosoftStrategy({
@@ -13,7 +14,14 @@ const strategy = new MicrosoftStrategy({
   if (profile) {
     console.log(req.user)
     const {id, userPrincipalName, provider} = profile;
-    return done(null, await authenticate(accessToken, id, userPrincipalName, "", provider))
+    const user = await authenticate(accessToken, id, userPrincipalName, "", provider) 
+    if (req.user && !user.user_id) {
+      req.session.linkEvent = true;
+      CredentialRepo.linkUser(id, req.user.user_id);
+      return done(null, req.user)
+    } else {
+      return done(null, user)
+    }
   } else {
     return done(null, false)
   }

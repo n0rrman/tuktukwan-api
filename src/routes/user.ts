@@ -60,6 +60,16 @@ router.delete('/api/user/link', async (ctx, next) => {
     await next();
 });
 
+router.delete('/api/user/unlink', async (ctx, next) => {
+    // check login status
+    // check user
+    // check >1 credentials attached
+        // T: delete credential
+        // F: return error code
+    ctx.status = 200
+    await next()
+})
+
 router.post('/api/user/new', async (ctx, next) => { 
     if (ctx.isAuthenticated()) {
         ctx.status = 200
