@@ -67,6 +67,7 @@ export default class CredentialRepo {
   }
 
   static async unlinkUser(user_id: number, credential_id: string) {
+    console.log("unlink called with (user_id, credential_id):", user_id, ", " , credential_id)
     await db.query(`
       DELETE FROM credential
       WHERE user_id = $1
