@@ -10,15 +10,22 @@ exports.shorthands = undefined;
  */
 exports.up = (pgm) => {
     pgm.sql(`
-      CREATE TABLE consonant_review (
-          id SERIAL PRIMARY KEY,
-          user_id INT REFERENCES "user"(id),
-          consonant_id INT REFERENCES "consonant"(id),
-          -- first review?
-          -- streak?
-          -- history? 
-          UNIQUE (user_id, consonant_id)
-      );
+        CREATE TYPE consonant_review_type AS ENUM (
+            'class',
+        );
+
+        CREATE TABLE consonant_review (
+            id SERIAL PRIMARY KEY,
+            user_id INT REFERENCES "user"(id),
+            consonant_id INT REFERENCES "consonant"(id),
+            type consonant_review_type,
+            repetitions INT DEFAULT 0,
+            easiness_factor REAL DEFAULT 2.5,
+            interval INT DEFAULT 0,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+            modified_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (user_id, consonant_id, type)
+        );
     `);
 };
 
@@ -30,5 +37,6 @@ exports.up = (pgm) => {
 exports.down = (pgm) => {
     pgm.sql(`
         DROP TABLE consonant_review;
+        DROP TYPE consonant_review_type;
     `);
 };
