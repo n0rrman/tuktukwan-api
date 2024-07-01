@@ -74,13 +74,13 @@ router.get('/api/auth/microsoft', async (ctx, next) => {
 // LINE callback
 router.get('/api/auth/line/callback', async (ctx, next) => {
     await passport.authenticate('line', {
-        // successReturnToOrRedirect: '/',
         failureRedirect: '/',
         keepSessionInfo: true       
     }, async (err, user) => {
         console.log("line auth_user:", user)
         await next();
         if (ctx.session?.linkEvent) {
+            ctx.session.linkEvent = false;
             ctx.redirect(profilePath)
         } else if (user) {
             await ctx.login(user);
@@ -93,13 +93,13 @@ router.get('/api/auth/line/callback', async (ctx, next) => {
 // GitHub callback
 router.get('/api/auth/github/callback', async (ctx, next) => {
     await passport.authenticate('github', {
-        // successReturnToOrRedirect: '/',
         failureRedirect: '/',
         keepSessionInfo: true       
     }, async (err, user) => {
         console.log("github auth_user:", user)
         await next();
         if (ctx.session?.linkEvent) {
+            ctx.session.linkEvent = false;
             ctx.redirect(profilePath)
         } else if (user) {
             await ctx.login(user);
@@ -112,13 +112,13 @@ router.get('/api/auth/github/callback', async (ctx, next) => {
 // Google callback
 router.get('/api/auth/google/callback', async (ctx, next) => {
     await passport.authenticate('google', {
-        // successReturnToOrRedirect: '/',
         failureRedirect: '/',
         keepSessionInfo: true
     }, async (err, user) => {
         console.log("google auth_user:", user)
         await next();
         if (ctx.session?.linkEvent) {
+            ctx.session.linkEvent = false;
             ctx.redirect(profilePath)
         } else if (user) {
             await ctx.login(user);
@@ -131,13 +131,13 @@ router.get('/api/auth/google/callback', async (ctx, next) => {
 // Microsoft callback
 router.get('/api/auth/microsoft/callback', async (ctx, next) => {
     await passport.authenticate('microsoft', {
-        // successReturnToOrRedirect: '/',
         failureRedirect: '/',
         keepSessionInfo: true    
     }, async (err, user) => {
         console.log("microsoft auth_user:", user)
         await next();
         if (ctx.session?.linkEvent) {
+            ctx.session.linkEvent = false;
             ctx.redirect(profilePath)
         } else if (user) {
             await ctx.login(user);
